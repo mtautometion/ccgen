@@ -5,20 +5,20 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>MT Automation</title>
   <style>
-    /* বেসিক সেটআপ এবং ব্যাকগ্রাউন্ড ছবি */
+   
     body {
-      background-image: url('ttts.jpg'); /* এখানে আপনার ছবির নাম দিন */
+      background-image: url('ttts.jpg'); 
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: #ffffff; /* সব লেখা সাদা */
+      color: #ffffff;
     }
 
-    /* কালোর মাঝে সাদা থিম (Dark Overlay) */
+   
     .overlay {
-      background-color: rgba(0, 0, 0, 0.85); /* ৮৫% কালো স্বচ্ছ লেয়ার */
+      background-color: rgba(0, 0, 0, 0.85);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -26,7 +26,7 @@
       padding: 20px;
     }
 
-    /* হেডার (MT Automation) */
+ 
     header {
       width: 100%;
       max-width: 800px;
@@ -40,7 +40,7 @@
       text-transform: uppercase;
     }
 
-    /* মূল কন্টেইনার */
+  
     .container {
       display: flex;
       flex-wrap: wrap;
@@ -48,9 +48,7 @@
       width: 100%;
       max-width: 800px;
     }
-
-    /* ফর্ম এবং রেজাল্ট বক্স (গাঢ় কালো) */
-    .box {
+.box {
       background: #111111;
       border: 1px solid #444444;
       padding: 25px;
@@ -60,7 +58,7 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.5);
     }
 
-    /* ইনপুট ফিল্ড ডিজাইন */
+  
     label { font-size: 14px; font-weight: 600; color: #cccccc; }
     input, select, textarea {
       width: 100%; padding: 12px; margin: 8px 0 15px;
@@ -70,7 +68,7 @@
     }
     input:focus, select:focus, textarea:focus { outline: none; border-color: #ffffff; }
 
-    /* বাটন ডিজাইন (সাদা বাটন, কালো লেখা) */
+  
     button {
       width: 100%; padding: 12px; background: #ffffff; color: #000000;
       border: none; border-radius: 5px; font-weight: bold; font-size: 16px;
@@ -136,7 +134,7 @@
   </div>
 
   <script>
-    // মাস ও বছর অটোম্যাটিক বসানোর কোড
+    
     const monthSel = document.getElementById('monthInput');
     for(let i=1; i<=12; i++) monthSel.innerHTML += `<option value="${String(i).padStart(2,'0')}">${String(i).padStart(2,'0')}</option>`;
     
@@ -144,7 +142,7 @@
     const currentYear = new Date().getFullYear();
     for(let i=0; i<15; i++) yearSel.innerHTML += `<option value="${currentYear+i}">${currentYear+i}</option>`;
 
-    // কার্ডের নম্বর জেনারেট করার অ্যালগরিদম (Luhn)
+    
     function generateCard(binInput) {
       let base = binInput.replace(/x/gi, () => Math.floor(Math.random() * 10));
       while (base.length < 15) base += Math.floor(Math.random() * 10);
@@ -157,7 +155,7 @@
       return base + ((10 - (sum % 10)) % 10);
     }
 
-    // Generate বাটনের কাজ
+   
     document.getElementById('generateBtn').addEventListener('click', () => {
       let bin = document.getElementById('binInput').value.trim() || '453900';
       let mObj = document.getElementById('monthInput').value;
@@ -177,7 +175,7 @@
       document.getElementById('result').value = out.join('\n');
     });
 
-    // Copy বাটনের কাজ
+  
     document.getElementById('copyBtn').addEventListener('click', async () => {
       const text = document.getElementById('result').value.trim();
       if(!text) return alert("No text to copy!");
