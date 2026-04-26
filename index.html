@@ -3,103 +3,260 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>MT Automation</title>
+  <title>MT Automation Pro</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
-   
+    /* basic setup */
+    :root {
+      --primary-color: #ffffff;
+      --secondary-color: #b3b3b3;
+      --accent-color: #4caf50; /* Success/Copy color */
+      --glass-bg: rgba(255, 255, 255, 0.06);
+      --glass-border: rgba(255, 255, 255, 0.12);
+      --input-bg: rgba(0, 0, 0, 0.5);
+    }
+
     body {
       background-image: url('ttts.jpg'); 
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: #ffffff;
-    }
-
-   
-    .overlay {
-      background-color: rgba(0, 0, 0, 0.85);
-      min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      color: var(--primary-color);
       display: flex;
-      flex-direction: column;
+      justify-content: center;
       align-items: center;
-      padding: 20px;
+      min-height: 100vh;
     }
 
- 
-    header {
+    /* main overlay & blur */
+    .overlay {
+      background-color: rgba(10, 10, 10, 0.82); 
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: -1;
+    }
+
+    /* main app container (unified card) */
+    .app-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 40px;
       width: 100%;
-      max-width: 800px;
-      padding: 15px 0;
+      max-width: 1000px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      margin: 20px;
+      box-sizing: border-box;
+    }
+
+    /* header design */
+    header {
       text-align: center;
-      font-size: 32px;
-      font-weight: bold;
-      border-bottom: 2px solid #ffffff;
-      margin-bottom: 30px;
+      font-size: 38px;
+      font-weight: 700;
+      margin-bottom: 35px;
       letter-spacing: 2px;
       text-transform: uppercase;
+      background: linear-gradient(135deg, #ffffff, #888888);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0px 4px 15px rgba(0,0,0,0.4);
     }
 
-  
-    .container {
+    /* grid layout for setup & result */
+    .tool-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    /* section styling */
+    .section-title {
+      margin-top: 0;
+      margin-bottom: 25px;
+      font-size: 20px;
+      font-weight: 600;
+      color: #eaeaea;
       display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      width: 100%;
-      max-width: 800px;
+      align-items: center;
+      gap: 10px;
     }
-.box {
-      background: #111111;
-      border: 1px solid #444444;
-      padding: 25px;
-      border-radius: 10px;
-      flex: 1;
-      min-width: 300px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    
+    .section-title::before {
+      content: '';
+      display: inline-block;
+      width: 6px; height: 20px;
+      background: var(--primary-color);
+      border-radius: 3px;
     }
 
-  
-    label { font-size: 14px; font-weight: 600; color: #cccccc; }
+    /* input fields design */
+    .form-group { margin-bottom: 18px; }
+    label { 
+      font-size: 13px; 
+      font-weight: 500; 
+      color: var(--secondary-color); 
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: block;
+      margin-bottom: 7px;
+    }
+    
     input, select, textarea {
-      width: 100%; padding: 12px; margin: 8px 0 15px;
-      background: #222222; color: #ffffff;
-      border: 1px solid #555555; border-radius: 5px;
-      box-sizing: border-box; font-family: monospace; font-size: 15px;
+      width: 100%; 
+      padding: 14px 16px; 
+      background: var(--input-bg); 
+      color: var(--primary-color);
+      border: 1px solid rgba(255, 255, 255, 0.08); 
+      border-radius: 12px;
+      box-sizing: border-box; 
+      font-family: 'Poppins', sans-serif; 
+      font-size: 15px;
+      transition: all 0.3s ease;
     }
-    input:focus, select:focus, textarea:focus { outline: none; border-color: #ffffff; }
 
-  
+    input:focus, select:focus, textarea:focus { 
+      outline: none; 
+      border-color: rgba(255, 255, 255, 0.4); 
+      background: rgba(0, 0, 0, 0.7);
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.08);
+    }
+
+    /* option menu color */
+    option { background-color: #1a1a1a; color: #ffffff; }
+
+    /* numbers/monospaced fonts */
+    input[type="text"], textarea { font-family: 'Courier New', Courier, monospace; letter-spacing: 1px; }
+
+    /* buttons design */
     button {
-      width: 100%; padding: 12px; background: #ffffff; color: #000000;
-      border: none; border-radius: 5px; font-weight: bold; font-size: 16px;
-      cursor: pointer; text-transform: uppercase; transition: 0.3s;
+      width: 100%; 
+      padding: 16px; 
+      background: var(--primary-color); 
+      color: #000000;
+      border: none; 
+      border-radius: 12px; 
+      font-weight: 600; 
+      font-size: 16px;
+      cursor: pointer; 
+      text-transform: uppercase; 
+      letter-spacing: 1.5px;
+      transition: all 0.3s ease;
+      margin-top: 10px;
     }
-    button:hover { background: #cccccc; }
 
-    .row { display: flex; gap: 15px; }
+    button:hover { 
+      background: #e0e0e0; 
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(255, 255, 255, 0.25);
+    }
+    
+    button:active { transform: translateY(1px); }
+
+    /* grid inside form */
+    .row { display: flex; gap: 20px; }
     .row > div { flex: 1; }
+
+    /* result area specific */
+    .result-container { display: flex; flex-direction: column; height: 100%; }
+    textarea#result { flex-grow: 1; resize: none; margin-bottom: 20px; margin-top: 0; }
+
+    /* footer & telegram section */
+    hr { border: 0; border-top: 1px solid var(--glass-border); margin: 30px 0; }
+    
+    footer {
+      text-align: center;
+      color: rgba(255,255,255,0.4);
+      font-size: 13px;
+    }
+
+    .telegram-support {
+      background: rgba(0, 136, 204, 0.1);
+      border: 1px solid rgba(0, 136, 204, 0.3);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 25px;
+      flex-wrap: wrap;
+    }
+
+    .qr-code-box {
+      background: white;
+      padding: 10px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    
+    .qr-code-box img { width: 110px; height: 110px; display: block; }
+
+    .tg-info { text-align: left; }
+    .tg-text { font-size: 16px; font-weight: 500; color: #fff; margin-bottom: 8px; }
+    .tg-link {
+      display: inline-block;
+      color: #0088cc;
+      text-decoration: none;
+      font-weight: 600;
+      background: #fff;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+    .tg-link:hover { background: #0088cc; color: #fff; }
+
+    /* responsive */
+    @media (max-width: 768px) {
+      .app-card { padding: 25px; }
+      header { font-size: 28px; }
+      .tool-grid { grid-template-columns: 1fr; gap: 40px; }
+      .app-card { margin: 10px; }
+      .telegram-support { flex-direction: column; text-align: center; gap: 15px; }
+      .tg-info { text-align: center; }
+    }
+    
   </style>
 </head>
 <body>
 
-  <div class="overlay">
-    <header>MT Automation</header>
+  <div class="overlay"></div>
+
+  <div class="app-card">
+    <header>MT Automation </header>
     
-    <div class="container">
-      <div class="box">
-        <h3 style="margin-top: 0;">Generate</h3>
+    <div class="tool-grid">
+      <div class="input-section">
+        <h3 class="section-title">Generator Setup</h3>
         
-        <label>BIN</label>
-        <input type="text" id="binInput" placeholder="4539xxxx">
+        <div class="form-group">
+          <label>BIN</label>
+          <input type="text" id="binInput" placeholder="Enter BIN" maxlength="16">
+        </div>
         
         <div class="row">
-          <div>
+          <div class="form-group">
             <label>Month</label>
             <select id="monthInput">
               <option value="rnd">Random</option>
             </select>
           </div>
-          <div>
+          <div class="form-group">
             <label>Year</label>
             <select id="yearInput">
               <option value="rnd">Random</option>
@@ -108,11 +265,11 @@
         </div>
 
         <div class="row">
-          <div>
+          <div class="form-group">
             <label>CVV2</label>
-            <input type="text" id="cvvInput" placeholder="Random">
+            <input type="text" id="cvvInput" placeholder="Rnd" maxlength="4">
           </div>
-          <div>
+          <div class="form-group">
             <label>Quantity</label>
             <input type="number" id="qtyInput" value="10" min="1" max="100">
           </div>
@@ -121,20 +278,32 @@
         <button id="generateBtn">Generate Cards</button>
       </div>
 
-      <div class="box">
-        <h3 style="margin-top: 0;">Result</h3>
-        <textarea id="result" rows="11" placeholder="Generated cards will appear here..."></textarea>
+      <div class="output-section result-container">
+        <h3 class="section-title">Generated Result</h3>
+        <textarea id="result" placeholder="Your generated cards will appear here..." readonly></textarea>
         <button id="copyBtn">Copy Output</button>
       </div>
     </div>
     
-    <footer style="margin-top: 40px; font-size: 13px; color: #888;">
-      © 2026 MT Automation. All rights reserved.
+    <hr>
+
+    <div class="telegram-support">
+      <div class="qr-code-box">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://t.me/MTAUTOMETION1" alt="Telegram QR Code">
+      </div>
+      <div class="tg-info">
+        <div class="tg-text">Join Our Official Telegram Channel</div>
+        <a href="https://t.me/MTAUTOMETION1" target="_blank" class="tg-link">@MT AUTOMETION</a>
+      </div>
+    </div>
+
+    <footer>
+      &copy; 2026 MT Automation. All rights reserved. Professional Utility Tools.
     </footer>
   </div>
 
   <script>
-    
+  
     const monthSel = document.getElementById('monthInput');
     for(let i=1; i<=12; i++) monthSel.innerHTML += `<option value="${String(i).padStart(2,'0')}">${String(i).padStart(2,'0')}</option>`;
     
@@ -142,10 +311,14 @@
     const currentYear = new Date().getFullYear();
     for(let i=0; i<15; i++) yearSel.innerHTML += `<option value="${currentYear+i}">${currentYear+i}</option>`;
 
-    
+  
     function generateCard(binInput) {
-      let base = binInput.replace(/x/gi, () => Math.floor(Math.random() * 10));
+      let base = binInput.replace(/x/gi, () => Math.floor(Math.random() * 10)).replace(/\s/g, '');
+      if(!/^\d+$/.test(base)) base = '453900'; // Validate numbers
+      
       while (base.length < 15) base += Math.floor(Math.random() * 10);
+      if(base.length > 15) base = base.substring(0, 15);
+      
       let sum = 0, alternate = true;
       for (let i = base.length - 1; i >= 0; i--) {
         let n = parseInt(base.substring(i, i + 1));
@@ -155,39 +328,76 @@
       return base + ((10 - (sum % 10)) % 10);
     }
 
-   
+ 
     document.getElementById('generateBtn').addEventListener('click', () => {
       let bin = document.getElementById('binInput').value.trim() || '453900';
       let mObj = document.getElementById('monthInput').value;
       let yObj = document.getElementById('yearInput').value;
       let cvvObj = document.getElementById('cvvInput').value.trim();
       let qty = parseInt(document.getElementById('qtyInput').value) || 10;
+      
       if (qty > 100) qty = 100;
+      if (qty < 1) qty = 1;
       
       let out = [];
       for(let i=0; i<qty; i++) {
         let card = generateCard(bin);
         let m = mObj === 'rnd' ? String(Math.floor(Math.random() * 12) + 1).padStart(2, '0') : mObj;
-        let y = yObj === 'rnd' ? String(currentYear + Math.floor(Math.random() * 6)) : yObj;
-        let c = cvvObj || String(Math.floor(Math.random() * (card.startsWith('3') ? 10000 : 1000))).padStart(card.startsWith('3') ? 4 : 3, '0');
+        let y = yObj === 'rnd' ? String(currentYear + Math.floor(Math.random() * 6)).substring(2) : yObj.substring(2); // YY format
+        
+        let c = cvvObj;
+        if(!c) {
+          // Amex cards usually have 4 digits, others 3
+          let len = (card.startsWith('34') || card.startsWith('37')) ? 4 : 3;
+          c = String(Math.floor(Math.random() * Math.pow(10, len))).padStart(len, '0');
+        }
         out.push(`${card}|${m}|${y}|${c}`);
       }
-      document.getElementById('result').value = out.join('\n');
+      
+      const resultBox = document.getElementById('result');
+      resultBox.value = out.join('\n');
     });
 
-  
+    
     document.getElementById('copyBtn').addEventListener('click', async () => {
       const text = document.getElementById('result').value.trim();
-      if(!text) return alert("No text to copy!");
+      const copyBtn = document.getElementById('copyBtn');
+      
+      if(!text) {
+        alert("Please generate cards first!");
+        return;
+      }
+      
       try { 
         await navigator.clipboard.writeText(text); 
-        alert("Copied Successfully!"); 
+        copyBtn.innerText = "COPIED!";
+        copyBtn.style.background = "#4caf50"; // Green Success
+        copyBtn.style.color = "#ffffff";
       } catch (e) { 
         document.getElementById('result').select(); 
         document.execCommand("copy"); 
-        alert("Copied Successfully!"); 
+        copyBtn.innerText = "COPIED!";
       }
+      
+      
+      setTimeout(() => {
+        copyBtn.innerText = "COPY OUTPUT";
+        copyBtn.style.background = "#ffffff";
+        copyBtn.style.color = "#000000";
+      }, 2000);
     });
   </script>
+<script>
+  
+  document.addEventListener('contextmenu', event => event.preventDefault());
+
+   document.onkeydown = function(e) {
+    if(e.keyCode == 123) { return false; } // F12
+    if(e.ctrlKey && e.shiftKey && e.keyCode == 73) { return false; } // Ctrl+Shift+I
+    if(e.ctrlKey && e.shiftKey && e.keyCode == 74) { return false; } // Ctrl+Shift+J
+    if(e.ctrlKey && e.keyCode == 85) { return false; } // Ctrl+U
+    if(e.ctrlKey && e.keyCode == 83) { return false; } // Ctrl+S
+  };
+</script>
 </body>
 </html>
