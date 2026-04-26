@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>MT Automation</title>
+  <style>
+    /* বেসিক সেটআপ এবং ব্যাকগ্রাউন্ড ছবি */
+    body {
+      background-image: url('ttts.jpg'); /* এখানে আপনার ছবির নাম দিন */
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #ffffff; /* সব লেখা সাদা */
+    }
+
+    /* কালোর মাঝে সাদা থিম (Dark Overlay) */
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.85); /* ৮৫% কালো স্বচ্ছ লেয়ার */
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    /* হেডার (MT Automation) */
+    header {
+      width: 100%;
+      max-width: 800px;
+      padding: 15px 0;
+      text-align: center;
+      font-size: 32px;
+      font-weight: bold;
+      border-bottom: 2px solid #ffffff;
+      margin-bottom: 30px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* মূল কন্টেইনার */
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      width: 100%;
+      max-width: 800px;
+    }
+
+    /* ফর্ম এবং রেজাল্ট বক্স (গাঢ় কালো) */
+    .box {
+      background: #111111;
+      border: 1px solid #444444;
+      padding: 25px;
+      border-radius: 10px;
+      flex: 1;
+      min-width: 300px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+
+    /* ইনপুট ফিল্ড ডিজাইন */
+    label { font-size: 14px; font-weight: 600; color: #cccccc; }
+    input, select, textarea {
+      width: 100%; padding: 12px; margin: 8px 0 15px;
+      background: #222222; color: #ffffff;
+      border: 1px solid #555555; border-radius: 5px;
+      box-sizing: border-box; font-family: monospace; font-size: 15px;
+    }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: #ffffff; }
+
+    /* বাটন ডিজাইন (সাদা বাটন, কালো লেখা) */
+    button {
+      width: 100%; padding: 12px; background: #ffffff; color: #000000;
+      border: none; border-radius: 5px; font-weight: bold; font-size: 16px;
+      cursor: pointer; text-transform: uppercase; transition: 0.3s;
+    }
+    button:hover { background: #cccccc; }
+
+    .row { display: flex; gap: 15px; }
+    .row > div { flex: 1; }
+  </style>
+</head>
+<body>
+
+  <div class="overlay">
+    <header>MT Automation</header>
+    
+    <div class="container">
+      <div class="box">
+        <h3 style="margin-top: 0;">Generate</h3>
+        
+        <label>BIN</label>
+        <input type="text" id="binInput" placeholder="4539xxxx">
+        
+        <div class="row">
+          <div>
+            <label>Month</label>
+            <select id="monthInput">
+              <option value="rnd">Random</option>
+            </select>
+          </div>
+          <div>
+            <label>Year</label>
+            <select id="yearInput">
+              <option value="rnd">Random</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>CVV2</label>
+            <input type="text" id="cvvInput" placeholder="Random">
+          </div>
+          <div>
+            <label>Quantity</label>
+            <input type="number" id="qtyInput" value="10" min="1" max="100">
+          </div>
+        </div>
+
+        <button id="generateBtn">Generate Cards</button>
+      </div>
+
+      <div class="box">
+        <h3 style="margin-top: 0;">Result</h3>
+        <textarea id="result" rows="11" placeholder="Generated cards will appear here..."></textarea>
+        <button id="copyBtn">Copy Output</button>
+      </div>
+    </div>
+    
+    <footer style="margin-top: 40px; font-size: 13px; color: #888;">
+      © 2026 MT Automation. All rights reserved.
+    </footer>
+  </div>
+
+  <script>
+    // মাস ও বছর অটোম্যাটিক বসানোর কোড
+    const monthSel = document.getElementById('monthInput');
+    for(let i=1; i<=12; i++) monthSel.innerHTML += `<option value="${String(i).padStart(2,'0')}">${String(i).padStart(2,'0')}</option>`;
+    
+    const yearSel = document.getElementById('yearInput');
+    const currentYear = new Date().getFullYear();
+    for(let i=0; i<15; i++) yearSel.innerHTML += `<option value="${currentYear+i}">${currentYear+i}</option>`;
+
+    // কার্ডের নম্বর জেনারেট করার অ্যালগরিদম (Luhn)
+    function generateCard(binInput) {
+      let base = binInput.replace(/x/gi, () => Math.floor(Math.random() * 10));
+      while (base.length < 15) base += Math.floor(Math.random() * 10);
+      let sum = 0, alternate = true;
+      for (let i = base.length - 1; i >= 0; i--) {
+        let n = parseInt(base.substring(i, i + 1));
+        if (alternate) { n *= 2; if (n > 9) n = (n % 10) + 1; }
+        sum += n; alternate = !alternate;
+      }
+      return base + ((10 - (sum % 10)) % 10);
+    }
+
+    // Generate বাটনের কাজ
+    document.getElementById('generateBtn').addEventListener('click', () => {
+      let bin = document.getElementById('binInput').value.trim() || '453900';
+      let mObj = document.getElementById('monthInput').value;
+      let yObj = document.getElementById('yearInput').value;
+      let cvvObj = document.getElementById('cvvInput').value.trim();
+      let qty = parseInt(document.getElementById('qtyInput').value) || 10;
+      if (qty > 100) qty = 100;
+      
+      let out = [];
+      for(let i=0; i<qty; i++) {
+        let card = generateCard(bin);
+        let m = mObj === 'rnd' ? String(Math.floor(Math.random() * 12) + 1).padStart(2, '0') : mObj;
+        let y = yObj === 'rnd' ? String(currentYear + Math.floor(Math.random() * 6)) : yObj;
+        let c = cvvObj || String(Math.floor(Math.random() * (card.startsWith('3') ? 10000 : 1000))).padStart(card.startsWith('3') ? 4 : 3, '0');
+        out.push(`${card}|${m}|${y}|${c}`);
+      }
+      document.getElementById('result').value = out.join('\n');
+    });
+
+    // Copy বাটনের কাজ
+    document.getElementById('copyBtn').addEventListener('click', async () => {
+      const text = document.getElementById('result').value.trim();
+      if(!text) return alert("No text to copy!");
+      try { 
+        await navigator.clipboard.writeText(text); 
+        alert("Copied Successfully!"); 
+      } catch (e) { 
+        document.getElementById('result').select(); 
+        document.execCommand("copy"); 
+        alert("Copied Successfully!"); 
+      }
+    });
+  </script>
+</body>
+</html>
